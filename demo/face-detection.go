@@ -9,11 +9,12 @@ import (
 )
 
 func main() {
-	hostName := "http://ai.qiniuapi.com/v1/face/detect"
+
+	api := "http://ai.qiniuapi.com/v1/face/detect"
 	// path := "/v1/face/detect?"
 	data := "{\"data\": {\"uri\": \"http://xxx.com/xxx.jpg\"}}"
 
-	req, reqErr := http.NewRequest("POST", hostName, strings.NewReader(data))
+	req, reqErr := http.NewRequest("POST", api, strings.NewReader(data))
 	if reqErr != nil {
 		return
 	}

@@ -1,30 +1,44 @@
 package main
 
 import (
-	"crypto/hmac"
-	"crypto/sha1"
-	"encoding/base64"
 	"fmt"
-	"io"
-	"net/url"
+	"github.com/qiniu/api.v7/auth/qbox"
+	"io/ioutil"
+	"net/http"
+	"strings"
 )
 
 func main() {
-	var URL = "http://p3l1d5mx4.bkt.clouddn.com/0000021"
-	// var URL = "http://"
-	var accessKey = ""
-	var secretKey = ""
-	var saveBucket = "temp"
-	var saveKey = "test-2.jpg"
+	//var URL = "http://p3l1d5mx4.bkt.clouddn.com/0000021"
+	data := "{\"data\": {\"uri\": \"http://p3l1d5mx4.bkt.clouddn.com/0000021\"}}"
 
-	encodedEntryURI := base64.URLEncoding.EncodeToString([]byte(saveBucket + ":" + saveKey))
-	URL += "|saveas/" + encodedEntryURI
-	h := hmac.New(sha1.New, []byte(secretKey))
-	// 签名内容不包括Scheme，仅含如下部分：
-	// <Domain>/<Path>?<Query>
-	u, _ := url.Parse(URL)
-	_, _ = io.WriteString(h, u.Host+u.RequestURI())
-	d := h.Sum(nil)
-	sign := accessKey + ":" + base64.URLEncoding.EncodeToString(d)
-	fmt.Println(URL + "/sign/" + sign)
+	api := "http://ai.qiniuapi.com/v1/image/censor"
+
+	req, reqErr := http.NewRequest("POST", api, strings.NewReader(data))
+	if reqErr != nil {
+		return
+	}
+
+	req.Header.Add("Content-Type", "application/json")
+
+	mac := qbox.NewMac("", "")
+	accessToken, signErr := mac.SignRequestV2(req)
+	if signErr != nil {
+		return
+	}
+
+	req.Header.Add("Authorization", "Qiniu "+accessToken)
+
+	resp, respErr := http.DefaultClient.Do(req)
+	if respErr != nil {
+		return
+	}
+	defer resp.Body.Close()
+
+	resData, ioErr := ioutil.ReadAll(resp.Body)
+	if ioErr != nil {
+		return
+	}
+
+	fmt.Println(string(resData))
 }

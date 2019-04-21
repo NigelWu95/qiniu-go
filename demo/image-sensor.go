@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	var URL = "http://.mp4?vframe/jpg/offset/7/w/480/h/360"
+	var URL = "http://p3l1d5mx4.bkt.clouddn.com/0000021"
 	// var URL = "http://"
 	var accessKey = ""
 	var secretKey = ""

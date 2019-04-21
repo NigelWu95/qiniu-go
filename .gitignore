@@ -1,6 +1,2 @@
 # Created by .ignore support plugin (hsz.mobi)
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/qiniu-go.iml
-.idea/workspace.xml
+.idea/*

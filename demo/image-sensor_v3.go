@@ -9,10 +9,10 @@ import (
 )
 
 func main() {
-	//var URL = "http://p3l1d5mx4.bkt.clouddn.com/0000021"
-	data := "{\"data\": {\"uri\": \"http://p3l1d5mx4.bkt.clouddn.com/0000021\"}}"
 
-	api := "http://ai.qiniuapi.com/v1/image/censor"
+	data := "{\"data\": {\"uri\": \"http://p3l1d5mx4.bkt.clouddn.com/0000021\"}, \"params\":{\"scenes\":[\"pulp\"]}}"
+
+	api := "http://ai.qiniuapi.com/v3/image/censor"
 
 	req, reqErr := http.NewRequest("POST", api, strings.NewReader(data))
 	if reqErr != nil {
@@ -21,7 +21,7 @@ func main() {
 
 	req.Header.Add("Content-Type", "application/json")
 
-	mac := qbox.NewMac("", "")
+	mac := qbox.NewMac("9RWwc5pMMwY5KjnDwaVGbylEiErm8_yRFshWdzqA", "i0jrToD_Ejgol6wOTXZcLxyjXMyQRbV1WeRh6faM")
 	accessToken, signErr := mac.SignRequestV2(req)
 	if signErr != nil {
 		return

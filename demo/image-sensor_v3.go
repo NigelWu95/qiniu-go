@@ -21,7 +21,7 @@ func main() {
 
 	req.Header.Add("Content-Type", "application/json")
 
-	mac := qbox.NewMac("9RWwc5pMMwY5KjnDwaVGbylEiErm8_yRFshWdzqA", "i0jrToD_Ejgol6wOTXZcLxyjXMyQRbV1WeRh6faM")
+	mac := qbox.NewMac("", "")
 	accessToken, signErr := mac.SignRequestV2(req)
 	if signErr != nil {
 		return

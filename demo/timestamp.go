@@ -6,12 +6,11 @@ import (
 	"github.com/qiniu/api.v7/cdn"
 	"net/url"
 	"strings"
-	"time"
 )
 
 var cryptKey string
 var cdnScheme string
-var CDNHost string
+var videoCDNHost string
 
 func GenerateDownloadURL(keyURL string) (string, error) {
 
@@ -21,11 +20,13 @@ func GenerateDownloadURL(keyURL string) (string, error) {
 		keyURL = "/" + keyURL
 	}
 
-	duration := int64(time.Second * 3600 * 24 / time.Millisecond)
+	duration := int64(3600 * 24)
 	accessURL, err := cdn.CreateTimestampAntileechURL(keyURL, cryptKey, duration)
 	if err != nil {
 		return "", err
 	}
+
+	fmt.Println(accessURL)
 
 	u, err := url.Parse(accessURL)
 	if err != nil {
@@ -33,18 +34,16 @@ func GenerateDownloadURL(keyURL string) (string, error) {
 	}
 
 	u.Scheme = cdnScheme
-	u.Host = CDNHost
+	u.Host = videoCDNHost
 
 	return u.String(), nil
 }
 
 func main() {
-
 	cryptKey = ""
 	cdnScheme = "http"
-	CDNHost = ""
-	// 签名时参数只传文件名部分
-	singedUrl, err := GenerateDownloadURL("yd/e8CLsYzE5wk_720p.mp4");
+	videoCDNHost = ""
+	singedUrl, err := GenerateDownloadURL("yd/--0HU52H2RU_720p.mp4");
 	if err != nil {
 		panic(err)
 	}

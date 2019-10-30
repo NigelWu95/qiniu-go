@@ -20,10 +20,11 @@ func main() {
 	encodedEntryURI := base64.URLEncoding.EncodeToString([]byte(saveBucket + ":" + saveKey))
 	URL += "|saveas/" + encodedEntryURI
 	h := hmac.New(sha1.New, []byte(secretKey))
+
 	// 签名内容不包括Scheme，仅含如下部分：
 	// <Domain>/<Path>?<Query>
 	u, _ := url.Parse(URL)
-	_, _ = io.WriteString(h, u.Host+u.RequestURI())
+	_, _ = io.WriteString(h, u.Host + u.RequestURI())
 	d := h.Sum(nil)
 	sign := accessKey + ":" + base64.URLEncoding.EncodeToString(d)
 	fmt.Println(URL + "/sign/" + sign)
